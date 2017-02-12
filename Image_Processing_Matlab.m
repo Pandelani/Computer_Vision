@@ -36,7 +36,7 @@ figure(5)
 imshow(bicycle_noise);
 
 %%
-%Gaussian filtering
+%Gaussian filtering for linear noise(gaussian noise)
 hsize=11;
 sigma=2;
 h=fspecial('gaussian',hsize,sigma);
@@ -45,14 +45,36 @@ surf(h);
 figure(7)
 imagesc(h);
 outim=imfilter(bicycle_noise,h);
+imshow(outim);
+
+%%
+%salt&pepper noise
+dolphin_noise=imnoise(dolphin,'salt & pepper', 0.02);
+
 figure(8)
-imshow(outim)
+imshow(dolphin_noise);
+
+%%
+%median filter(for non-linear noise salt&pepper noise)
+median_filtered=medfilt2(dolphin_noise);
+figure(9)
+imshow(median_filtered);
+
+
+%% 
+%Unsharp Mask--Use for "sharp" the image
+h1=[-0.1,-0.1,-0.1;-0.1,1.9,-0.1;-0.1,-0.1,-0.1];
+median_sharp=imfilter(median_filtered,h1);
+figure(10)
+imshow(median_sharp);
 
 %%
 %function for blend
 function output = blend(a, b, alpha)
     output=alpha.*a+(1-alpha).*b;
 end
+
+
 
 
 
